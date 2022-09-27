@@ -19,18 +19,19 @@ def main():
 
             # BeautifulSoup
             soup = BeautifulSoup(request, "lxml")
-            print(soup.get_text())
             # If the response is valid it should then load beautifulsoup and search the page for the text of the results
             links = []
             words = []
 
+            # narrows to what is displayed in the content div of the page
+            content = soup.find("div", {"id": "mw-content-text"})
 
-            divTag = soup.find_all("div", {"id": "mw-content-text"})
+            for link in content.find_all('a'):
+                links.append(link.get('href'))
+                words.append(link.text)
 
-            for tag in divTag:
-                link = tag.find_all("a")
-                for tag in tdTags:
-                    print tag.text
+            for x in range(0, len(words)):
+                print("{} - {}".format(words[x], links[x]))
 
         except Exception as e:
             print(e)
